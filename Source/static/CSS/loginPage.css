@@ -10,8 +10,7 @@ html,body{
     height: 100%;
     width: 100%;
     place-items: center;
-    background: #dce7ff;
-    /* background: linear-gradient(-135deg, #c850c0, #4158d0); */
+    background: var(--webpage-background);
 }
 ::selection{
     background: #4158d0;
@@ -31,7 +30,7 @@ html,body{
     color: #fff;
     user-select: none;
     border-radius: 15px 15px 0 0;
-    background: linear-gradient(-190deg, #8e98c5, #3239a8);
+    background: var(--header-gradient);
     padding: 0px 0px 5px 0px;
 }
 .wrapper .title{
@@ -73,7 +72,7 @@ html,body{
 }
 .wrapper form .field input:focus,
 form .field input:valid{
-    border-color: #4158d0;
+    border-color: var(--border-colour);
 }
 .wrapper form .field label{
     position: absolute;
@@ -102,7 +101,7 @@ form .field input[type="submit"]{
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
-    background: linear-gradient(10deg, #6c749a, #0b16ba);
+    background: var(--button-gradient);
     transition: all 0.3s ease;
 }
 form .field input[type="submit"]:active{

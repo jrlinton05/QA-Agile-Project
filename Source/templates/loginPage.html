@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Amazon Reviews Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='CSS/constants.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='CSS/loginPage.css') }}">
     </head>
     <body>
@@ -28,7 +29,7 @@
                     <input type="submit" value="Login">
                 </div>
                 <div class="signup-link">
-                    No account? <a href="#">Register here</a>
+                    No account? <a href="/register">Register here</a>
                 </div>
             </form>
         </div>

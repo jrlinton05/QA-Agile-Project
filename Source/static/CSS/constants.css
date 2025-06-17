@@ -1,0 +1,6 @@
+:root {
+    --webpage-background: #dce7ff;
+    --header-gradient: linear-gradient(-190deg, #8e98c5, #3239a8);
+    --button-gradient: linear-gradient(10deg, #6c749a, #0b16ba);
+    --border-colour: #4158d0;
+}
