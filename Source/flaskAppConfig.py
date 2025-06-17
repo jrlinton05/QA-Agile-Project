@@ -5,7 +5,7 @@ app = Flask(__name__)
 # Routes the main page of the site to the relevant HTML template
 @app.route("/")
 def run_test_page():
-    return render_template('testPage.html')
+    return render_template('loginPage.html')
 
 # If this file is ran from the IDE, deploy the website locally in debug mode
 if __name__ == "__main__":
