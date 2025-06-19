@@ -60,6 +60,8 @@ def register_page():
                 return redirect("/login")
             case RegistrationResult.USER_IN_DATABASE:
                 flash("Username already exists")
+            case RegistrationResult.PASSWORD_INVALID:
+                flash("Password does not match requirements")
             case RegistrationResult.PASSWORDS_DO_NOT_MATCH:
                 flash("Passwords do not match")
             case _:

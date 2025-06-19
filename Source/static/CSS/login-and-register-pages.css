@@ -40,6 +40,19 @@
 .wrapper form{
     padding: 10px 30px 30px 30px;
 }
+.password-requirements{
+    color: #999999;
+    margin: 15px 10px;
+    font-weight: 400;
+    font-size: 20px;
+    pointer-events: none;
+    user-select: none;
+}
+.password-requirements ul{
+    padding-left: 40px;
+    padding-top: 5px;
+    font-size: 15px;
+}
 .wrapper form .field{
     height: 50px;
     width: 100%;
@@ -97,4 +110,5 @@ form .signup-link{
     color: #262626;
     margin-top: 20px;
     text-align: center;
+    user-select: none;
 }
