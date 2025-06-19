@@ -1,11 +1,13 @@
-from Source.Constants.constants import USER_DATABASE_NAME, USER_TABLE_NAME
+from Source.Constants.constants import DATABASE_FILE_NAME, USER_TABLE_NAME
 from Source.APIs.database_query_api import query_database
 from Source.APIs.encryption_api import encrypt_string, decrypt_string
 from Source.Enums.login_result import LoginResult
 
 def get_user_password_from_db(username):
     query = "SELECT password FROM {table} WHERE username = ? LIMIT 1".format(table = USER_TABLE_NAME)
-    result = query_database(USER_DATABASE_NAME, query, params = (username,)).fetchone()
+    result, con = query_database(query, params = (username,))
+    result = result.fetchone()
+    con.close()
     if result is None:
         return LoginResult.USER_NOT_EXIST
     else:
