@@ -1,0 +1,49 @@
+@import url('https://fonts.cdnfonts.com/css/amazon-ember');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Amazon Ember', sans-serif;
+}
+html,body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    place-items: center;
+    background: var(--webpage-background);
+}
+.alert {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    right: 0;
+    width: 280px;
+    padding: 20px;
+    margin: 0 auto 5px;
+    border-radius: 20px;
+    color: #811525;
+    background-color: #ffd5de;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation:
+            fadeSlideDown 0.4s ease-out forwards,
+            fadeOut 0.5s ease-in forwards 3s;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    text-align: center;
+}
+
+@keyframes fadeSlideDown {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+    }
+}

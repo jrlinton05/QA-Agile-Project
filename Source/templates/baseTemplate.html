@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Amazon Reviews{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/constants.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/baseTemplate.css') }}">
+    {% block stylesheet %}{% endblock%}
+  </head>
+  <body>
+    <div class="alerts">
+      {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+          <div class="alert">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+    </div>
+    {% block content %}{% endblock %}
+    <script>
+      setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+          alert.style.transition = 'opacity 0.5s ease';
+          alert.style.opacity = '0';
+          setTimeout(() => alert.remove(), 500);
+        });
+      }, 3000);
+    </script>
+  </body>
+</html>
