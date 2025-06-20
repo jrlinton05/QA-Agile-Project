@@ -1,5 +1,5 @@
-from Source.APIs.database_query_api import query_database
-from Source.Constants.constants import DATABASE_FILE_NAME
+from Source.Helpers.database_query_helper import query_database
+
 
 def delete_user(username):
     query = "SELECT 1 FROM Users WHERE username = ?"

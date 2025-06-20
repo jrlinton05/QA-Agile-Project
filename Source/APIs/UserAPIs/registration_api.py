@@ -1,12 +1,13 @@
 import re
 
-from Source.Constants.constants import DATABASE_FILE_NAME, USER_TABLE_NAME
-from Source.APIs.database_query_api import query_database
-from Source.APIs.encryption_api import encrypt_string
+from Source.Constants.constants import USER_TABLE_NAME
+from Source.Enums.generic_return_codes import GenericReturnCodes
+from Source.Helpers.database_query_helper import query_database
+from Source.Helpers.encryption_helper import encrypt_string
 from Source.Enums.registration_result import RegistrationResult
 
 def validate_user_not_in_db(username):
-    query = "SELECT 1 FROM {table} WHERE username = ? LIMIT 1".format(table = USER_TABLE_NAME)
+    query = f"SELECT 1 FROM {USER_TABLE_NAME} WHERE username = ? LIMIT 1"
     result, con = query_database(query, params = (username,))
     is_valid = result.fetchone() is None
     con.close()
@@ -29,11 +30,12 @@ def register_new_user(username, password, repeated_password, is_admin):
 
     encrypted_password = encrypt_string(password)
 
-    query = "INSERT INTO {table} VALUES(?, ?, {admin})".format(table = USER_TABLE_NAME, admin = 1 if is_admin else 0)
+    int_is_admin = 1 if is_admin else 0
+    query = f"INSERT INTO {USER_TABLE_NAME} VALUES(?, ?, {int_is_admin})"
     try:
         _, con = query_database(query, params = (username, encrypted_password))
         con.close()
     except Exception as e:
         return e
     else:
-        return RegistrationResult.SUCCESS
+        return GenericReturnCodes.SUCCESS
