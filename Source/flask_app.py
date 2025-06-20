@@ -41,13 +41,13 @@ def get_login_page():
 
         match result:
             case LoginResult.USER_NOT_EXIST:
-                flash("This user does not exist")
+                flash("This user does not exist", "info")
             case LoginResult.INCORRECT_PASSWORD:
-                flash("Password is incorrect")
+                flash("Password is incorrect", "info")
             case GenericReturnCodes.SUCCESS:
                 is_admin = is_user_admin(username)
                 if is_admin == GenericReturnCodes.ERROR:
-                    flash("Unknown error when checking admin status")
+                    flash("Unknown error when checking admin status", "error")
                 else:
                     user = User(username, is_admin)
                     login_user(user)
@@ -57,7 +57,7 @@ def get_login_page():
                     else:
                         return redirect(next_page)
             case _:
-                flash("Unknown error has occurred")
+                flash("Unknown error has occurred", "error")
 
     return render_template("login-page.html")
 
@@ -72,16 +72,16 @@ def register_page():
 
         match result:
             case GenericReturnCodes.SUCCESS:
-                flash("New user successfully registered")
+                flash("New user successfully registered", "success")
                 return redirect("/login")
             case RegistrationResult.USER_IN_DATABASE:
-                flash("Username already exists")
+                flash("Username already exists", "info")
             case RegistrationResult.PASSWORD_INVALID:
-                flash("Password does not match requirements")
+                flash("Password does not match requirements", "info")
             case RegistrationResult.PASSWORDS_DO_NOT_MATCH:
-                flash("Passwords do not match")
+                flash("Passwords do not match", "info")
             case _:
-                flash(f"Unknown error has occurred: {result}")
+                flash(f"Unknown error has occurred: {result}", "error")
 
     return render_template("register-page.html")
 

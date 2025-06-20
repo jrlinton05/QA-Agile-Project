@@ -23,8 +23,6 @@ html,body{
     padding: 20px;
     margin: 0 auto 5px;
     border-radius: 20px;
-    color: #811525;
-    background-color: #ffd5de;
     opacity: 0;
     transform: translateY(-20px);
     animation:
@@ -34,6 +32,18 @@ html,body{
     flex-direction: column;
     z-index: 1000;
     text-align: center;
+}
+.alert.success {
+    color: #308115;
+    background-color: #d6ffd5;
+}
+.alert.error {
+    color: #811525;
+    background-color: #ffd5de;
+}
+.alert.info {
+    color: #373737;
+    background-color: #bababa;
 }
 
 @keyframes fadeSlideDown {
