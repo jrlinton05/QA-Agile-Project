@@ -21,3 +21,9 @@ def create_product(product_name, product_image):
         return GenericReturnCodes.ERROR
     else:
         return random_id
+
+
+if __name__ == "__main__":
+    product_name = input("Product name\n")
+    product_image = input("Product image\n")
+    create_product(product_name, product_image)

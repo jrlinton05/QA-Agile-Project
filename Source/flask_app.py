@@ -5,8 +5,9 @@ from Source.APIs.UserAPIs.login_api import validate_user_login
 from Source.APIs.UserAPIs.registration_api import register_new_user
 from Source.Constants.constants import SECRET_KEY
 from Source.Enums.generic_return_codes import GenericReturnCodes
-from Source.Enums.registration_result import RegistrationResult
-from Source.Enums.login_result import LoginResult
+from Source.Enums.registration_return_codes import RegistrationReturnCodes
+from Source.Enums.login_return_codes import LoginReturnCodes
+from Source.Helpers.build_list_of_products import build_list_of_products
 from Source.Helpers.build_user_class_from_database_helper import build_user
 from Source.Helpers.is_user_admin_helper import is_user_admin
 from Source.Models.user import User
@@ -27,7 +28,7 @@ def load_user(username):
 @app.route("/")
 def get_root_page():
     if current_user.is_authenticated:
-        return f"You have successfully logged in as {current_user.get_id()}"
+        return redirect("/products")
     else:
         return redirect("/login")
 
@@ -40,9 +41,9 @@ def get_login_page():
         result = validate_user_login(username, password)
 
         match result:
-            case LoginResult.USER_NOT_EXIST:
+            case LoginReturnCodes.USER_NOT_EXIST:
                 flash("This user does not exist", "info")
-            case LoginResult.INCORRECT_PASSWORD:
+            case LoginReturnCodes.INCORRECT_PASSWORD:
                 flash("Password is incorrect", "info")
             case GenericReturnCodes.SUCCESS:
                 is_admin = is_user_admin(username)
@@ -53,7 +54,7 @@ def get_login_page():
                     login_user(user)
                     next_page = request.args.get('next')
                     if next_page is None:
-                        return f"You have successfully logged in as {username}"
+                        return redirect("/products")
                     else:
                         return redirect(next_page)
             case _:
@@ -74,17 +75,22 @@ def register_page():
             case GenericReturnCodes.SUCCESS:
                 flash("New user successfully registered", "success")
                 return redirect("/login")
-            case RegistrationResult.USER_IN_DATABASE:
+            case RegistrationReturnCodes.USER_IN_DATABASE:
                 flash("Username already exists", "info")
-            case RegistrationResult.PASSWORD_INVALID:
+            case RegistrationReturnCodes.PASSWORD_INVALID:
                 flash("Password does not match requirements", "info")
-            case RegistrationResult.PASSWORDS_DO_NOT_MATCH:
+            case RegistrationReturnCodes.PASSWORDS_DO_NOT_MATCH:
                 flash("Passwords do not match", "info")
             case _:
                 flash(f"Unknown error has occurred: {result}", "error")
 
     return render_template("register-page.html")
 
+
+@app.route("/products")
+def products_page():
+    products = build_list_of_products()
+    return render_template("product-page.html", products=products)
 
 # If this file is ran from the IDE, deploy the website locally in debug mode
 if __name__ == "__main__":

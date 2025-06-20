@@ -1,3 +1,5 @@
+import csv
+
 from Source.Constants.constants import REVIEW_TABLE_NAME
 from Source.Enums.generic_return_codes import GenericReturnCodes
 from Source.Helpers.database_query_helper import query_database

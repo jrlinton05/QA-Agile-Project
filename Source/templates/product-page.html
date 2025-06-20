@@ -1,0 +1,21 @@
+{% extends "base-template.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/product-page.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="product-list">
+    {% for product in products %}
+    <div class="product-card">
+        <div class="product-info">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.num_reviews }} reviews</p>
+            <p>Average score: {{ product.average_score }}/5</p>
+        </div>
+        <div class="product-image">
+            <img src="{{ product.image_url }}" alt="Image of {{ product.name }}">
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

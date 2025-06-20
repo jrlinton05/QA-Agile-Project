@@ -1,5 +1,5 @@
 from enum import Enum, auto
 
-class LoginResult(Enum):
+class LoginReturnCodes(Enum):
     USER_NOT_EXIST = auto()
     INCORRECT_PASSWORD = auto()

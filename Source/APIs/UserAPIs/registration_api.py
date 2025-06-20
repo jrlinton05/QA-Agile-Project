@@ -4,7 +4,7 @@ from Source.Constants.constants import USER_TABLE_NAME
 from Source.Enums.generic_return_codes import GenericReturnCodes
 from Source.Helpers.database_query_helper import query_database
 from Source.Helpers.encryption_helper import encrypt_string
-from Source.Enums.registration_result import RegistrationResult
+from Source.Enums.registration_return_codes import RegistrationReturnCodes
 
 def validate_user_not_in_db(username):
     query = f"SELECT 1 FROM {USER_TABLE_NAME} WHERE username = ? LIMIT 1"
@@ -22,11 +22,11 @@ def validate_password(password):
 
 def register_new_user(username, password, repeated_password, is_admin):
     if not repeated_password_matches_password(password, repeated_password):
-        return RegistrationResult.PASSWORDS_DO_NOT_MATCH
+        return RegistrationReturnCodes.PASSWORDS_DO_NOT_MATCH
     if not validate_user_not_in_db(username):
-        return RegistrationResult.USER_IN_DATABASE
+        return RegistrationReturnCodes.USER_IN_DATABASE
     if not validate_password(password):
-        return RegistrationResult.PASSWORD_INVALID
+        return RegistrationReturnCodes.PASSWORD_INVALID
 
     encrypted_password = encrypt_string(password)
 

@@ -1,0 +1,30 @@
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 150px 40px 40px;
+}
+
+.product-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #eaf1ff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-info {
+    max-width: 60%;
+}
+
+.product-info h2 {
+    margin-bottom: 10px;
+}
+
+.product-image img {
+    max-height: 100px;
+    object-fit: contain;
+    border-radius: 15px;
+}
