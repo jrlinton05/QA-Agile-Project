@@ -11,7 +11,12 @@
     {% block header %}
     <header class="site-header">
       <nav class="navbar">
-        <a href="{{ url_for('root_page') }}" class="nav-left link">Home</a>
+        <div class="nav-left-group">
+          <a href="{{ url_for('root_page') }}" class="link">Products</a>
+          {% if current_user.get_is_admin() %}
+          <a href="{{ url_for('admin_page') }}" class="link">Admin Controls</a>
+          {% endif %}
+        </div>
         <div class="nav-right-group">
           <span>User: {{ current_user.get_id() }}</span>
           <a href="{{ url_for('logout') }}" class="link">Logout</a>

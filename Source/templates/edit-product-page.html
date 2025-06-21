@@ -1,0 +1,21 @@
+{% extends "base-template.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/edit-product-page.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="edit-box">
+  <h2>Edit Product</h2>
+  <form method="POST">
+    <div class="field">
+      <label for="product_name">Product Name</label>
+      <input type="text" id="product_name" name="product_name" value="{{ product.name }}" required>
+    </div>
+    <div class="field">
+      <label for="product_image">Product Image URL</label>
+      <input type="text" id="product_image" name="product_image" value="{{ product.image_url }}" required>
+    </div>
+    <button type="submit">Save Changes</button>
+  </form>
+</div>
+{% endblock %}

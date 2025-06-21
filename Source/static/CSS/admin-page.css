@@ -16,11 +16,6 @@
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.product-card:hover {
-    background: #c8d9f2;
-    cursor: pointer;
-}
-
 .product-info {
     max-width: 60%;
 }
@@ -38,4 +33,43 @@
 .product-card-link {
     text-decoration: none;
     color: inherit;
+}
+
+.delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.delete-btn:hover {
+    background-color: #d93636;
+}
+
+.edit-btn {
+    background-color: #4d9aff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.edit-btn:hover {
+    background-color: #388bf8;
+}
+
+.button-row {
+    user-select: none;
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.button-row form {
+    margin: 0;
 }

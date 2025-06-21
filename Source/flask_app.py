@@ -1,8 +1,9 @@
-from crypt import methods
-
 from flask import Flask, render_template, flash, request, redirect, url_for, session
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
+import logging
 
+from Source.APIs.ProductAPIs.delete_product_api import delete_product
+from Source.APIs.ProductAPIs.update_product_api import update_product
 from Source.APIs.ReviewAPIs.create_review_api import create_review
 from Source.APIs.ReviewAPIs.delete_review_api import delete_review
 from Source.APIs.ReviewAPIs.update_review_api import update_review
@@ -16,6 +17,7 @@ from Source.Enums.update_api_return_codes import UpdateAndDeleteReturnCodes
 from Source.Helpers.build_list_of_products_helper import build_list_of_products
 from Source.Helpers.build_list_of_reviews_helper import build_list_of_reviews
 from Source.Helpers.build_user_class_from_database_helper import build_user
+from Source.Helpers.get_product_by_id_helper import get_product_by_id
 from Source.Helpers.get_review_by_id_helper import get_review_by_id
 from Source.Helpers.is_user_admin_helper import is_user_admin
 from Source.Models.user import User
@@ -23,6 +25,8 @@ from Source.Models.user import User
 # Flask app setup and config
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
+app.logger.setLevel(logging.INFO)
+app.logger.info('App started')
 
 # Flask login setup
 login_manager = LoginManager()
@@ -112,6 +116,10 @@ def products_page():
 @app.route("/products/<product_id>", methods=["GET", "POST"])
 @login_required
 def review_page(product_id):
+    product = get_product_by_id(product_id)
+    if not product:
+        flash("Product not found", "error")
+        return redirect(url_for("products_page"))
     if request.method == "POST":
         username = current_user.get_id()
         review_title = request.form["review_title"]
@@ -120,7 +128,7 @@ def review_page(product_id):
         result = create_review(review_title, review_body, review_score, product_id, username)
         if result == GenericReturnCodes.ERROR:
             flash("Unknown error occurred", "error")
-        if result == GenericReturnCodes.SUCCESS:
+        elif result == GenericReturnCodes.SUCCESS:
             flash("Review created", "success")
     reviews = build_list_of_reviews(product_id)
     return render_template("review-page.html", reviews=reviews)
@@ -128,16 +136,16 @@ def review_page(product_id):
 
 @app.route("/delete-review/<review_id>", methods=["POST"])
 @login_required
-def delete_review_form(review_id):
+def delete_review_request(review_id):
     product_id = request.form["product_id"]
     result = delete_review(review_id, current_user.get_id(), current_user.get_is_admin())
     if result == UpdateAndDeleteReturnCodes.USERNAME_DOES_NOT_MATCH:
         flash("You are not authorised to delete this review", "error")
-    if result == UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST:
+    elif result == UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST:
         flash(f"Error: review_id {review_id} does not exist", "error")
-    if result == GenericReturnCodes.ERROR:
+    elif result == GenericReturnCodes.ERROR:
         flash("Unknown error", "error")
-    if result == GenericReturnCodes.SUCCESS:
+    elif result == GenericReturnCodes.SUCCESS:
         flash("Successfully deleted review", "success")
 
     return redirect(url_for("review_page", product_id=product_id))
@@ -156,7 +164,7 @@ def edit_review(product_id, review_id):
 
         match result:
             case UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST:
-                flash(f"Error: review_id {review_id} does not exist", "error")
+                flash(f"Error: Review ID {review_id} does not exist", "error")
             case UpdateAndDeleteReturnCodes.USERNAME_DOES_NOT_MATCH:
                 flash("You are not authorised to edit this review", "error")
             case GenericReturnCodes.ERROR:
@@ -171,6 +179,65 @@ def edit_review(product_id, review_id):
         return redirect(url_for("review_page", product_id=product_id))
 
     return render_template("edit-review-page.html", review=review, product_id=product_id)
+
+
+@app.route("/admin", methods=["GET", "POST"])
+@login_required
+def admin_page():
+    if current_user.get_is_admin():
+        products = build_list_of_products()
+        return render_template("admin-page.html", products=products)
+    else:
+        flash("You must be an admin to access this page", "info")
+        return redirect(url_for("root_page"))
+
+
+@app.route("/edit-product/<product_id>", methods=["GET", "POST"])
+@login_required
+def edit_product(product_id):
+    if current_user.get_is_admin():
+        if request.method == "POST":
+            product_name = request.form["product_name"]
+            product_image = request.form["product_image"]
+
+            result = update_product(product_id, product_name, product_image)
+
+            match result:
+                case GenericReturnCodes.ERROR:
+                    flash("Unknown error", "error")
+                case UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST:
+                    flash("Product does not exist", "error")
+                case GenericReturnCodes.SUCCESS:
+                    flash("Product edited successfully", "success")
+                    return redirect(url_for("admin_page"))
+
+        product = get_product_by_id(product_id)
+        if not product:
+            flash("Product not found", "error")
+            return redirect(url_for("admin_page"))
+
+        return render_template("edit-product-page.html", product=product)
+    else:
+        flash("You must be an admin to access this page", "info")
+        return redirect(url_for("root_page"))
+
+
+@app.route("/delete-product/<product_id>", methods=["POST"])
+@login_required
+def delete_product_request(product_id):
+    if current_user.get_is_admin():
+        result = delete_product(product_id)
+        if result == GenericReturnCodes.ERROR:
+            flash("Unknown error", "error")
+        elif result == UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST:
+            flash("Product does not exist", "error")
+        elif result == GenericReturnCodes.SUCCESS:
+            flash("Successfully deleted product", "success")
+        return redirect(url_for("admin_page"))
+    else:
+        flash("You must be an admin to perform this action", "info")
+
+    return redirect(url_for("root_page"))
 
 
 # If this file is ran from the IDE, deploy the website locally in debug mode

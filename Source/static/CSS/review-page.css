@@ -39,6 +39,7 @@
 .review-info h3 {
     font-size: 30px;
     margin-bottom: 10px;
+    user-select: none;
 }
 
 .review-form-right {
@@ -137,6 +138,7 @@ input[type="radio"] {
 }
 
 .button-row {
+    user-select: none;
     display: flex;
     gap: 10px;
     margin-top: 10px;
