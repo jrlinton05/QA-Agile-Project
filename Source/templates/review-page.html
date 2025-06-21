@@ -46,7 +46,7 @@
         <div class="radio-group">
           {% for i in range(1, 6) %}
           <label>
-            <input type="radio" name="review_score" value="{{ i }}"> {{ "⭐️" * i }}
+            <input type="radio" name="review_score" value="{{ i }}" required> {{ "⭐️" * i }}
           </label>
           {% endfor %}
         </div>

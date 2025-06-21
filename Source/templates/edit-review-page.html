@@ -21,7 +21,7 @@
       <div class="radio-group">
         {% for i in range(1, 6) %}
         <label>
-          <input type="radio" name="review_score" value="{{ i }}" {% if review.review_score == i %}checked{% endif %}> {{ "⭐️" * i }}
+          <input type="radio" name="review_score" value="{{ i }}" {% if review.review_score == i %}checked{% endif %} required> {{ "⭐️" * i }}
         </label>
         {% endfor %}
       </div>
