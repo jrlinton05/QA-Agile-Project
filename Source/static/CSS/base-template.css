@@ -9,8 +9,9 @@ html,body{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    width: 100%;
+    height: auto;
+    width: auto;
+    overflow-y: auto;
     place-items: center;
     background: var(--webpage-background);
 }

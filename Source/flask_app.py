@@ -8,6 +8,7 @@ from Source.Enums.generic_return_codes import GenericReturnCodes
 from Source.Enums.registration_return_codes import RegistrationReturnCodes
 from Source.Enums.login_return_codes import LoginReturnCodes
 from Source.Helpers.build_list_of_products import build_list_of_products
+from Source.Helpers.build_list_of_reviews import build_list_of_reviews
 from Source.Helpers.build_user_class_from_database_helper import build_user
 from Source.Helpers.is_user_admin_helper import is_user_admin
 from Source.Models.user import User
@@ -91,6 +92,13 @@ def register_page():
 def products_page():
     products = build_list_of_products()
     return render_template("product-page.html", products=products)
+
+
+@app.route("/product/<product_id>")
+def review_page(product_id):
+    reviews = build_list_of_reviews(product_id)
+    return render_template("review-page.html", reviews=reviews)
+
 
 # If this file is ran from the IDE, deploy the website locally in debug mode
 if __name__ == "__main__":

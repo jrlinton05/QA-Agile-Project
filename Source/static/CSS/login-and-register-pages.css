@@ -2,11 +2,18 @@
     background: #4158d0;
     color: #fff;
 }
-.wrapper{
-    width: 680px;
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 60vw;
+    height: fit-content;
+    margin: 40px auto;
     background: #fff;
     border-radius: 20px;
     box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    box-sizing: border-box;
 }
 .wrapper .heading{
     font-size: 35px;
@@ -17,7 +24,8 @@
     user-select: none;
     border-radius: 15px 15px 0 0;
     background: var(--header-gradient);
-    padding: 0px 0px 5px 0px;
+    padding: 20px 0;
+    width: 100%;
 }
 .wrapper .title{
     font-size: 55px;
