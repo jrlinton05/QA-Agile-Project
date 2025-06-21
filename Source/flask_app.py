@@ -4,9 +4,11 @@ from flask import Flask, render_template, flash, request, redirect, url_for, ses
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 
 from Source.APIs.ReviewAPIs.create_review_api import create_review
+from Source.APIs.ReviewAPIs.delete_review_api import delete_review
 from Source.APIs.UserAPIs.login_api import validate_user_login
 from Source.APIs.UserAPIs.registration_api import register_new_user
 from Source.Constants.constants import SECRET_KEY
+from Source.Enums.delete_api_return_codes import DeleteReturnCodes
 from Source.Enums.generic_return_codes import GenericReturnCodes
 from Source.Enums.registration_return_codes import RegistrationReturnCodes
 from Source.Enums.login_return_codes import LoginReturnCodes
@@ -121,6 +123,22 @@ def review_page(product_id):
     reviews = build_list_of_reviews(product_id)
     return render_template("review-page.html", reviews=reviews)
 
+
+@app.route("/delete-review/<review_id>", methods=["POST"])
+@login_required
+def delete_review_form(review_id):
+    product_id = request.form["product_id"]
+    result = delete_review(review_id, current_user.get_id())
+    if result == DeleteReturnCodes.USERNAME_DOES_NOT_MATCH:
+        flash("You are not authorised to delete this review", "error")
+    if result == DeleteReturnCodes.ITEM_DOES_NOT_EXIST:
+        flash(f"Error: review_id {review_id} does not exist", "error")
+    if result == GenericReturnCodes.ERROR:
+        flash("Unknown error", "error")
+    if result == GenericReturnCodes.SUCCESS:
+        flash("Successfully deleted review", "success")
+
+    return redirect(url_for("review_page", product_id=product_id))
 
 # If this file is ran from the IDE, deploy the website locally in debug mode
 if __name__ == "__main__":

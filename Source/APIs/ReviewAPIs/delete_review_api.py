@@ -1,4 +1,4 @@
-from Source.Constants.constants import PRODUCT_TABLE_NAME, REVIEW_TABLE_NAME
+from Source.Constants.constants import REVIEW_TABLE_NAME
 from Source.Enums.delete_api_return_codes import DeleteReturnCodes
 from Source.Enums.generic_return_codes import GenericReturnCodes
 from Source.Helpers.check_username_matches_helper import check_username_matches

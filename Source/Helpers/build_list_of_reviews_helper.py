@@ -4,15 +4,15 @@ from Source.Models.review import Review
 
 
 def build_list_of_reviews(product_id):
-    query = f"SELECT review_title, review_body, review_score, username FROM {REVIEW_TABLE_NAME} WHERE product_id = ?"
+    query = f"SELECT review_id, review_title, review_body, review_score, username FROM {REVIEW_TABLE_NAME} WHERE product_id = ?"
     cur, con = query_database(query, params=(product_id,))
     rows = cur.fetchall()
     con.close()
 
     reviews = []
     for row in rows:
-        review_title, review_body, review_score, username = row
-        review = Review(review_title, review_body, review_score, username)
+        review_id, review_title, review_body, review_score, username = row
+        review = Review(review_id, review_title, review_body, review_score, username, product_id)
         reviews.append(review)
 
     return reviews
