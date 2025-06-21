@@ -15,6 +15,11 @@
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.product-card:hover {
+    background: #c8d9f2;
+    cursor: pointer;
+}
+
 .product-info {
     max-width: 60%;
 }
