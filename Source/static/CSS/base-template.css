@@ -5,7 +5,9 @@
     box-sizing: border-box;
     font-family: 'Amazon Ember', sans-serif;
 }
+
 html,body{
+    padding-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,6 +17,52 @@ html,body{
     place-items: center;
     background: var(--webpage-background);
 }
+
+.site-header {
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 10px 40px;
+    box-sizing: border-box;
+}
+
+.link {
+    color: var(--border-colour);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.nav-left {
+    text-decoration: none;
+    user-select: none;
+}
+
+.nav-right-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    user-select: none;
+}
+
+.nav-right-group a {
+    text-decoration: none;
+}
+
+.navbar a:active,
+.navbar a:focus {
+    outline: none;
+    text-decoration: none;
+}
+
 .alert {
     position: fixed;
     top: 20px;
@@ -34,14 +82,17 @@ html,body{
     z-index: 1000;
     text-align: center;
 }
+
 .alert.success {
     color: #308115;
     background-color: #d6ffd5;
 }
+
 .alert.error {
     color: #811525;
     background-color: #ffd5de;
 }
+
 .alert.info {
     color: #373737;
     background-color: #bababa;
@@ -53,6 +104,7 @@ html,body{
         transform: translateY(0);
     }
 }
+
 @keyframes fadeOut {
     to {
         opacity: 0;

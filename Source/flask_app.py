@@ -1,14 +1,17 @@
-from flask import Flask, render_template, flash, request, redirect
-from flask_login import LoginManager, login_user, current_user
+from crypt import methods
 
+from flask import Flask, render_template, flash, request, redirect, url_for, session
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user
+
+from Source.APIs.ReviewAPIs.create_review_api import create_review
 from Source.APIs.UserAPIs.login_api import validate_user_login
 from Source.APIs.UserAPIs.registration_api import register_new_user
 from Source.Constants.constants import SECRET_KEY
 from Source.Enums.generic_return_codes import GenericReturnCodes
 from Source.Enums.registration_return_codes import RegistrationReturnCodes
 from Source.Enums.login_return_codes import LoginReturnCodes
-from Source.Helpers.build_list_of_products import build_list_of_products
-from Source.Helpers.build_list_of_reviews import build_list_of_reviews
+from Source.Helpers.build_list_of_products_helper import build_list_of_products
+from Source.Helpers.build_list_of_reviews_helper import build_list_of_reviews
 from Source.Helpers.build_user_class_from_database_helper import build_user
 from Source.Helpers.is_user_admin_helper import is_user_admin
 from Source.Models.user import User
@@ -20,6 +23,8 @@ app.config['SECRET_KEY'] = SECRET_KEY
 # Flask login setup
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'login_page'
+login_manager.login_message_category = 'info'
 
 @login_manager.user_loader
 def load_user(username):
@@ -27,7 +32,7 @@ def load_user(username):
 
 # Flask app page routing
 @app.route("/")
-def get_root_page():
+def root_page():
     if current_user.is_authenticated:
         return redirect("/products")
     else:
@@ -35,7 +40,7 @@ def get_root_page():
 
 
 @app.route("/login", methods = ["GET", "POST"])
-def get_login_page():
+def login_page():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
@@ -87,15 +92,32 @@ def register_page():
 
     return render_template("register-page.html")
 
+@app.route("/logout")
+def logout():
+    logout_user()
+    session.clear()
+    return redirect(url_for("root_page"))
 
 @app.route("/products")
+@login_required
 def products_page():
     products = build_list_of_products()
     return render_template("product-page.html", products=products)
 
 
-@app.route("/product/<product_id>")
+@app.route("/products/<product_id>", methods=["GET", "POST"])
+@login_required
 def review_page(product_id):
+    if request.method == "POST":
+        username = current_user.get_id()
+        review_title = request.form["review_title"]
+        review_body = request.form["review_body"]
+        review_score = request.form["review_score"]
+        result = create_review(review_title, review_body, review_score, product_id, username)
+        if result == GenericReturnCodes.ERROR:
+            flash("Unknown error occurred", "error")
+        if result == GenericReturnCodes.SUCCESS:
+            flash("Review created", "success")
     reviews = build_list_of_reviews(product_id)
     return render_template("review-page.html", reviews=reviews)
 

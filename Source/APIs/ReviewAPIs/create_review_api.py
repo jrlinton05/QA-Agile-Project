@@ -1,5 +1,3 @@
-import csv
-
 from Source.Constants.constants import REVIEW_TABLE_NAME
 from Source.Enums.generic_return_codes import GenericReturnCodes
 from Source.Helpers.database_query_helper import query_database
@@ -26,4 +24,4 @@ def create_review(review_title, review_body, review_score, product_id, username)
     except:
         return GenericReturnCodes.ERROR
     else:
-        return random_id
+        return GenericReturnCodes.SUCCESS

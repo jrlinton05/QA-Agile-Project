@@ -1,10 +1,17 @@
 from Source.Constants.constants import REVIEW_TABLE_NAME
 from Source.Enums.generic_return_codes import GenericReturnCodes
 from Source.Enums.update_api_return_codes import UpdateReturnCodes
+from Source.Helpers.check_username_matches_helper import check_username_matches
 from Source.Helpers.database_query_helper import query_database
 
 
-def update_review(review_id, **kwargs):
+def update_review(username, review_id, **kwargs):
+    does_username_match = check_username_matches(REVIEW_TABLE_NAME, "review_id", review_id, username)
+    if does_username_match == GenericReturnCodes.ERROR:
+        return UpdateReturnCodes.ITEM_DOES_NOT_EXIST
+    elif not does_username_match:
+        return UpdateReturnCodes.USERNAME_DOES_NOT_MATCH
+
     fields = []
     params = []
 
@@ -23,10 +30,6 @@ def update_review(review_id, **kwargs):
     if 'product_id' in kwargs and kwargs['product_id'] is not None:
         fields.append("product_id = ?")
         params.append(kwargs['product_id'])
-
-    if 'username' in kwargs and kwargs['username'] is not None:
-        fields.append("username = ?")
-        params.append(kwargs['username'])
 
     if not fields:
         return UpdateReturnCodes.NO_FIELDS_TO_UPDATE

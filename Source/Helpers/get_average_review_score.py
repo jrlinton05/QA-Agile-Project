@@ -11,4 +11,4 @@ def get_average_review_score(product_id):
         return None
 
     total = sum(score[0] for score in result)
-    return total / len(result)
+    return round(total / len(result), 1)
