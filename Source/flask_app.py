@@ -130,7 +130,7 @@ def review_page(product_id):
 @login_required
 def delete_review_form(review_id):
     product_id = request.form["product_id"]
-    result = delete_review(review_id, current_user.get_id())
+    result = delete_review(review_id, current_user.get_id(), current_user.get_is_admin())
     if result == UpdateAndDeleteReturnCodes.USERNAME_DOES_NOT_MATCH:
         flash("You are not authorised to delete this review", "error")
     if result == UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST:
@@ -152,7 +152,7 @@ def edit_review(product_id, review_id):
         review_body = request.form["review_body"]
         review_score = request.form["review_score"]
 
-        result = update_review(username, review_id, review_title, review_body, review_score)
+        result = update_review(username, review_id, review_title, review_body, review_score, current_user.get_is_admin())
 
         match result:
             case UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST:

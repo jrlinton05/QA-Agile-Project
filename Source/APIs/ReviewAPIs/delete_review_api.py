@@ -5,12 +5,13 @@ from Source.Helpers.check_username_matches_helper import check_username_matches
 from Source.Helpers.database_query_helper import query_database
 
 
-def delete_review(review_id, username):
-    does_username_match = check_username_matches(REVIEW_TABLE_NAME, "review_id", review_id, username)
-    if does_username_match == GenericReturnCodes.ERROR:
-        return UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST
-    elif not does_username_match:
-        return UpdateAndDeleteReturnCodes.USERNAME_DOES_NOT_MATCH
+def delete_review(review_id, username, is_admin):
+    if not is_admin:
+        does_username_match = check_username_matches(REVIEW_TABLE_NAME, "review_id", review_id, username)
+        if does_username_match == GenericReturnCodes.ERROR:
+            return UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST
+        elif not does_username_match:
+            return UpdateAndDeleteReturnCodes.USERNAME_DOES_NOT_MATCH
 
     try:
         query = f"DELETE FROM {REVIEW_TABLE_NAME} WHERE review_id = ?"
