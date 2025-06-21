@@ -1,0 +1,78 @@
+.edit-box {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px 30px;
+    background: #f9faff;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.edit-box h2 {
+    padding-bottom: 10px;
+}
+
+.field {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 8px;
+    user-select: none;
+}
+
+input[type="text"],
+textarea {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    border-color: #4158d0;
+    outline: none;
+}
+
+.radio-group {
+    display: flex;
+    gap: 15px;
+}
+
+.radio-group label {
+    font-size: 20px;
+    user-select: none;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    margin-right: 6px;
+    cursor: pointer;
+}
+
+button {
+    background: #4158d0;
+    color: white;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none;
+}
+
+button:hover {
+    background: #3142b1;
+}
+
+button:active {
+    transform: scale(0.95);
+}

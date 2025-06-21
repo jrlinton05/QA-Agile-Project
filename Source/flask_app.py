@@ -5,16 +5,18 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 
 from Source.APIs.ReviewAPIs.create_review_api import create_review
 from Source.APIs.ReviewAPIs.delete_review_api import delete_review
+from Source.APIs.ReviewAPIs.update_review_api import update_review
 from Source.APIs.UserAPIs.login_api import validate_user_login
 from Source.APIs.UserAPIs.registration_api import register_new_user
 from Source.Constants.constants import SECRET_KEY
-from Source.Enums.delete_api_return_codes import DeleteReturnCodes
 from Source.Enums.generic_return_codes import GenericReturnCodes
 from Source.Enums.registration_return_codes import RegistrationReturnCodes
 from Source.Enums.login_return_codes import LoginReturnCodes
+from Source.Enums.update_api_return_codes import UpdateAndDeleteReturnCodes
 from Source.Helpers.build_list_of_products_helper import build_list_of_products
 from Source.Helpers.build_list_of_reviews_helper import build_list_of_reviews
 from Source.Helpers.build_user_class_from_database_helper import build_user
+from Source.Helpers.get_review_by_id_helper import get_review_by_id
 from Source.Helpers.is_user_admin_helper import is_user_admin
 from Source.Models.user import User
 
@@ -36,9 +38,9 @@ def load_user(username):
 @app.route("/")
 def root_page():
     if current_user.is_authenticated:
-        return redirect("/products")
+        return redirect(url_for("products_page"))
     else:
-        return redirect("/login")
+        return redirect(url_for("login_page"))
 
 
 @app.route("/login", methods = ["GET", "POST"])
@@ -129,9 +131,9 @@ def review_page(product_id):
 def delete_review_form(review_id):
     product_id = request.form["product_id"]
     result = delete_review(review_id, current_user.get_id())
-    if result == DeleteReturnCodes.USERNAME_DOES_NOT_MATCH:
+    if result == UpdateAndDeleteReturnCodes.USERNAME_DOES_NOT_MATCH:
         flash("You are not authorised to delete this review", "error")
-    if result == DeleteReturnCodes.ITEM_DOES_NOT_EXIST:
+    if result == UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST:
         flash(f"Error: review_id {review_id} does not exist", "error")
     if result == GenericReturnCodes.ERROR:
         flash("Unknown error", "error")
@@ -139,6 +141,37 @@ def delete_review_form(review_id):
         flash("Successfully deleted review", "success")
 
     return redirect(url_for("review_page", product_id=product_id))
+
+
+@app.route("/edit-review/<product_id>/<review_id>", methods=["GET", "POST"])
+@login_required
+def edit_review(product_id, review_id):
+    if request.method == "POST":
+        username = current_user.get_id()
+        review_title = request.form["review_title"]
+        review_body = request.form["review_body"]
+        review_score = request.form["review_score"]
+
+        result = update_review(username, review_id, review_title, review_body, review_score)
+
+        match result:
+            case UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST:
+                flash(f"Error: review_id {review_id} does not exist", "error")
+            case UpdateAndDeleteReturnCodes.USERNAME_DOES_NOT_MATCH:
+                flash("You are not authorised to edit this review", "error")
+            case GenericReturnCodes.ERROR:
+                flash("Unknown error", "error")
+            case GenericReturnCodes.SUCCESS:
+                flash("Review edited successfully", "success")
+                return redirect(url_for("review_page", product_id=product_id))
+
+    review = get_review_by_id(review_id)
+    if not review:
+        flash("Review not found", "error")
+        return redirect(url_for("review_page", product_id=product_id))
+
+    return render_template("edit-review-page.html", review=review, product_id=product_id)
+
 
 # If this file is ran from the IDE, deploy the website locally in debug mode
 if __name__ == "__main__":

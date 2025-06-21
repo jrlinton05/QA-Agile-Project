@@ -1,7 +1,6 @@
 from enum import Enum, auto
 
 
-class UpdateReturnCodes(Enum):
+class UpdateAndDeleteReturnCodes(Enum):
     ITEM_DOES_NOT_EXIST = auto()
-    NO_FIELDS_TO_UPDATE = auto()
     USERNAME_DOES_NOT_MATCH = auto()
