@@ -10,13 +10,11 @@
         <div class="product-card">
             <div class="product-info">
                 <h2>{{ product.name }}</h2>
-                <p>{{ product.num_reviews }} reviews</p>
-                <p>Average score: {{ product.average_score }}/5 Stars</p>
-            </div>
-            <div class="product-image">
-                <img src="{{ product.image_url }}" alt="Image of {{ product.name }}">
             </div>
             <div class="button-row">
+                <div class="product-image">
+                    <img src="{{ product.image_url }}" alt="Image of {{ product.name }}">
+                </div>
                 <form method="GET" action="{{ url_for('edit_product', product_id=product.product_id) }}">
                     <button type="submit" class="edit-btn">Edit</button>
                 </form>
