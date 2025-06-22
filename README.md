@@ -1,61 +1,76 @@
 # Amazon Reviews Website
-***
-## Accessing the site
-Please go to https://jrlinton05.pythonanywhere.com/ to access the site
-***
-## Logging in
-To log in as an admin, use the following details:  
-Username: jrlinton  
-Password: AmazonReviews123123
 
-To log in as a regular user, you can use the following details or register your own:  
-Username: FrodoBaggins12  
-Password: TheHobbit123
+## 🌐 Accessing the Site
+Visit the deployed website at:  
+**[https://jrlinton05.pythonanywhere.com/](https://jrlinton05.pythonanywhere.com/)**
 
-To register a new account, fill in the details at https://jrlinton05.pythonanywhere.com/register, accessible via the login page by pressing "Register here"
+---
 
-You may then log in with the details you provided
+## 🔐 Logging In
 
-All passwords are encrypted before being stored for added security
+### Admin Account
+- **Username:** `jrlinton`
+- **Password:** `AmazonReviews123123`
 
-The user session token will track your login even if you close and reopen the page/browser
-***
-## Viewing products
-After logging in you will be taken to https://jrlinton05.pythonanywhere.com/products
+### Regular User
+- **Username:** `FrodoBaggins12`
+- **Password:** `TheHobbit123`  
 
-Here you can see all products, their images, and their review count and average score
 
-From here you may:
-* Click on a product to see the reviews or create a new review
-* Log out by clicking "Logout"
-* (Admin only) Open the admin panel by clicking Admin Controls
-***
-## Viewing reviews
-Once you have opened a product's page, all reviews are displayed on the left
+  Alternatively, register a new user either via the login page by pressing "Register here" or at:  
+  [https://jrlinton05.pythonanywhere.com/register](https://jrlinton05.pythonanywhere.com/register)
 
-If logged in as an admin, you will see edit and delete buttons on *every* review  
-If logged in as a regular user, you will only see edit and delete buttons on *your* reviews
+> Passwords are securely encrypted before storage.  
+> Session tokens persist login even after closing the browser.
 
-To create a review, fill out the form on the right side of the screen
+---
 
-To edit a review, click "Edit" and alter the form displayed on screen before clicking "Save Changes"
+## 🛍️ Viewing Products
 
-To delete a review, click "Delete". You must also click "Ok" when the confirmation message pops up to prevent accidental error
+After logging in, you'll be redirected to:  
+**[https://jrlinton05.pythonanywhere.com/products](https://jrlinton05.pythonanywhere.com/products)**
 
-***
-## Admin controls
-As an admin, by accessing the admin controls at https://jrlinton05.pythonanywhere.com/admin, you can perform the following actions:
-* Edit a product
-* Delete a product
-* Create a new product
+Here you can:
+- View all products with their image, review count, and average score.
+- Click a product to view/add reviews.
+- Click **Logout** to sign out.
+- *(Admins only)* Click **Admin Controls** to manage products.
 
-To edit a product, click "Edit" and alter the form displayed on screen before clicking "Save Changes"
+---
 
-To delete a product, click "Delete". You must also click "Ok" when the confirmation message pops up to prevent accidental error
-***
-## Interpreting messages
-To keep you informed, the website may display information in a box at the top of the screen  
-These will either be:
-* Green for success messages
-* Grey for info messages
-* Red for error messages
+## ✍️ Viewing & Managing Reviews
+
+- All reviews are listed on the left of the product page.
+- Logged-in **admins** can edit/delete **any** review.
+- Logged-in **users** can edit/delete **their own** reviews.
+
+### Actions:
+- **Add Review:** Use the form on the right.
+- **Edit Review:** Click *Edit*, update fields, click *Save Changes*.
+- **Delete Review:** Click *Delete* → Confirm in the popup.
+
+---
+
+## 🛠️ Admin Controls
+
+Accessible via:  
+**[https://jrlinton05.pythonanywhere.com/admin](https://jrlinton05.pythonanywhere.com/admin)**
+
+Admins can:
+- ✅ Add a new product
+- ✏️ Edit a product
+- ❌ Delete a product
+
+### Actions:
+- **Add:** Fill in the form on the right, click *Add Product*.
+- **Edit:** Click *Edit*, change fields, click *Save Changes*.
+- **Delete:** Click *Delete* → Confirm in the popup.
+
+---
+
+## 💬 Flash Messages
+
+To keep users informed, flash messages appear at the top:
+- 🟩 **Green:** Success
+- ⬜ **Grey:** Info
+- 🟥 **Red:** Error
