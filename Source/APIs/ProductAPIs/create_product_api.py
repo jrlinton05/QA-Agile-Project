@@ -25,4 +25,4 @@ def create_product(product_name, product_image):
         logger.error(f"Error creating product: {e}")
         return GenericReturnCodes.ERROR
     else:
-        return random_id
+        return GenericReturnCodes.SUCCESS

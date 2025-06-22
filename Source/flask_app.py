@@ -2,6 +2,7 @@ from flask import Flask, render_template, flash, request, redirect, url_for, ses
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 import logging
 
+from Source.APIs.ProductAPIs.create_product_api import create_product
 from Source.APIs.ProductAPIs.delete_product_api import delete_product
 from Source.APIs.ProductAPIs.update_product_api import update_product
 from Source.APIs.ReviewAPIs.create_review_api import create_review
@@ -238,6 +239,25 @@ def delete_product_request(product_id):
         flash("You must be an admin to perform this action", "info")
 
     return redirect(url_for("root_page"))
+
+
+@app.route("/create-product-request", methods=["POST"])
+@login_required
+def create_product_request():
+    if not current_user.get_is_admin():
+        flash("You must be an admin to create products", "info")
+        return redirect(url_for("root_page"))
+
+    product_name = request.form["product_name"]
+    product_image = request.form["product_image"]
+    result = create_product(product_name, product_image)
+
+    if result == GenericReturnCodes.ERROR:
+        flash("Error creating product", "error")
+    else:
+        flash("Product created successfully", "success")
+
+    return redirect(url_for("admin_page"))
 
 
 # If this file is ran from the IDE, deploy the website locally in debug mode
