@@ -1,5 +1,5 @@
-from Source.Helpers.count_number_of_reviews import count_number_of_reviews
-from Source.Helpers.get_average_review_score import get_average_review_score
+from Source.Helpers.count_number_of_reviews_helper import count_number_of_reviews
+from Source.Helpers.get_average_review_score_helper import get_average_review_score
 
 
 class Product:
