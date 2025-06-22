@@ -5,6 +5,7 @@
 
 {% block content %}
 <div class="review-page-container">
+  {% if reviews|length > 0 %}
   <div class="reviews-left">
     <div class="review-list">
       {% for review in reviews %}
@@ -31,7 +32,7 @@
       {% endfor %}
     </div>
   </div>
-
+  {% endif %}
   <div class="review-form-right">
     <h2>Add a Review</h2>
     <form method="POST">
