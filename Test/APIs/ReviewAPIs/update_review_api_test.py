@@ -1,0 +1,50 @@
+from unittest.mock import patch
+from Source.APIs.ReviewAPIs.update_review_api import update_review
+from Source.Enums.generic_return_codes import GenericReturnCodes
+from Source.Enums.update_api_return_codes import UpdateAndDeleteReturnCodes
+
+
+@patch("Source.APIs.ReviewAPIs.update_review_api.query_database")
+@patch("Source.APIs.ReviewAPIs.update_review_api.check_username_matches", return_value=True)
+def test_successful_update_by_owner(mock_check_match, mock_query):
+    result = update_review("user1", "rev123", "New Title", "New Body", 5, is_admin=False)
+
+    assert result == GenericReturnCodes.SUCCESS
+    mock_check_match.assert_called_once_with("Reviews", "rev123", "user1")
+    mock_query.assert_called_once()
+
+
+@patch("Source.APIs.ReviewAPIs.update_review_api.query_database")
+def test_successful_update_by_admin(mock_query):
+    result = update_review("admin_user", "rev123", "Title", "Body", 3, is_admin=True)
+
+    assert result == GenericReturnCodes.SUCCESS
+    mock_query.assert_called_once()
+
+
+@patch("Source.APIs.ReviewAPIs.update_review_api.logger")
+@patch("Source.APIs.ReviewAPIs.update_review_api.check_username_matches", return_value=GenericReturnCodes.ERROR)
+def test_returns_item_does_not_exist_when_check_fails(mock_check_match, mock_logger):
+    result = update_review("user1", "rev123", "T", "B", 1, is_admin=False)
+
+    assert result == UpdateAndDeleteReturnCodes.ITEM_DOES_NOT_EXIST
+    mock_logger.warning.assert_called_once()
+
+
+@patch("Source.APIs.ReviewAPIs.update_review_api.logger")
+@patch("Source.APIs.ReviewAPIs.update_review_api.check_username_matches", return_value=False)
+def test_returns_username_does_not_match(mock_check_match, mock_logger):
+    result = update_review("wrong_user", "rev123", "T", "B", 2, is_admin=False)
+
+    assert result == UpdateAndDeleteReturnCodes.USERNAME_DOES_NOT_MATCH
+    mock_logger.warning.assert_called_once()
+
+
+@patch("Source.APIs.ReviewAPIs.update_review_api.logger")
+@patch("Source.APIs.ReviewAPIs.update_review_api.query_database", side_effect=Exception("DB error"))
+@patch("Source.APIs.ReviewAPIs.update_review_api.check_username_matches", return_value=True)
+def test_returns_error_on_query_exception(mock_check_match, mock_query, mock_logger):
+    result = update_review("user1", "rev123", "T", "B", 3, is_admin=False)
+
+    assert result == GenericReturnCodes.ERROR
+    mock_logger.error.assert_called_once()

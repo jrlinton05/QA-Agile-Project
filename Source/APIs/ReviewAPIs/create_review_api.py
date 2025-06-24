@@ -11,7 +11,7 @@ def create_review(review_title, review_body, review_score, product_id, username)
     unique_id_generated = False
     while not unique_id_generated:
         random_id = generate_random_id()
-        unique_id_generated = not does_id_exist_in_table(random_id, REVIEW_TABLE_NAME)
+        unique_id_generated = not does_id_exist_in_table(random_id, REVIEW_TABLE_NAME, "review_id")
 
     query = f'''
         INSERT INTO {REVIEW_TABLE_NAME} (

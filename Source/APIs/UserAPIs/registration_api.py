@@ -37,6 +37,7 @@ def register_new_user(username, password, repeated_password, is_admin):
     int_is_admin = 1 if is_admin else 0
 
     query = f"INSERT INTO {USER_TABLE_NAME} (username, password, is_admin) VALUES (?, ?, ?)"
+    con = None
     try:
         _, con = query_database(query, params=(username, encrypted_password, int_is_admin))
     except Exception as e:
@@ -45,4 +46,5 @@ def register_new_user(username, password, repeated_password, is_admin):
     else:
         return GenericReturnCodes.SUCCESS
     finally:
-        con.close()
+        if con:
+            con.close()

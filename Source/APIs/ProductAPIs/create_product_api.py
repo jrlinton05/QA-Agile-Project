@@ -12,7 +12,7 @@ def create_product(product_name, product_image):
     unique_id_generated = False
     while not unique_id_generated:
         random_id = generate_random_id()
-        unique_id_generated = not does_id_exist_in_table(random_id, PRODUCT_TABLE_NAME)
+        unique_id_generated = not does_id_exist_in_table(random_id, PRODUCT_TABLE_NAME, "product_id")
 
     query = f'''
     INSERT INTO {PRODUCT_TABLE_NAME} (product_id, product_name, product_image)
