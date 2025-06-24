@@ -14,7 +14,7 @@
           <h2>{{ review.review_title }}</h2>
           <h3>{{ "⭐️" * review.review_score }}</h3>
           <p>{{ review.review_body }}</p>
-          <p>By {{ review.username }}</p>
+          <p class="by-username">By {{ review.username }}</p>
           {% if current_user.get_id() == review.username or current_user.get_is_admin() %}
           <div class="button-row">
             <form method="GET" action="{{ url_for('edit_review', product_id=review.product_id, review_id=review.review_id) }}">

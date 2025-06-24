@@ -42,6 +42,10 @@
     user-select: none;
 }
 
+.review-info p.by-username {
+    margin-top: 10px;
+}
+
 .review-form-right {
     flex: 1;
     background: #f8faff;
