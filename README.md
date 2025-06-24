@@ -21,6 +21,7 @@ Visit the deployed website at:
   [https://jrlinton05.pythonanywhere.com/register](https://jrlinton05.pythonanywhere.com/register)
 
 > Passwords are securely encrypted before storage.  
+
 > Session tokens persist login even after closing the browser.
 
 ---
